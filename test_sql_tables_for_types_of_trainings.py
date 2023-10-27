@@ -105,14 +105,16 @@ def main():
         if message_text == 'stop':
             break
 
-        elif message_text == 'start':
+        elif message_text == 'start': 
+            # TODO: воткнуть это все в функции  
 
-
+            # проверка пользователя и регистрация 
             if check_user_exists(user_id):
                 print(f"Пользователь с ID {user_id} существует в базе данных.")
                 print('Вы уже зарегестрировали план тренировок. Ваш план тренировок:')
                 view_types_of_trainings(user_id, 'all') 
 
+            # регистрация пользователя и ввод программы тренировок
             else:
                 print(f"Пользователь с ID {user_id} не найден в базе данных.")
                 create_user_table(user_id)
@@ -128,7 +130,7 @@ def main():
                 print('Регистрация успешна. Ваш план тренировок:')
                 view_types_of_trainings(user_id, 'all')
 
-
+        
         elif message_text == 'view_plan':
             view_types_of_trainings(user_id, input()) 
 
