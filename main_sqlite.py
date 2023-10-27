@@ -8,11 +8,13 @@ import sqlite3
 
 conn = sqlite3.connect('data\gym_log.db')
 cursor = conn.cursor()
+today = datetime.today().strftime('%d-%m-%Y')
 
 logging.basicConfig(level=logging.INFO) # Включаем логирование, чтобы не пропустить важные сообщения
 
 bot = Bot(token="6778184881:AAHwWFtZ1hlDWljgmj_GwUBra0NjU82gW8c") # Объект бота
 dp = Dispatcher() # Диспетчер
+
 
 #-------------------------------------------Функции--------------------------------
 
@@ -42,6 +44,7 @@ def create_user_table(user_id):
     cursor.execute(f'''
         CREATE TABLE IF NOT EXISTS {table_name} (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            type_of_training TEXT,
             exercise_name TEXT,
             repetitions INTEGER,
             weight REAL,
@@ -66,22 +69,15 @@ async def cmd_start(message: types.Message):
         keyboard=kb,
         resize_keyboard=True,
     )
-    await message.answer("привет, я бот для записи твоих тренировок. начнем тренировку?", reply_markup=keyboard)
+    await message.answer("Привет, я бот для записи твоих тренировок. Укажите количество тренировок в неделю и вашу программу. например: 3, спина + ноги, грудь + бицепс, плечи + трицепс.", reply_markup=keyboard)
 
-# @dp.message()
-# async def cmd_finish(message: types.Message):
-#     kb = [
-#         [
-#             types.KeyboardButton(text="Закончить тренировку")
-#             # types.KeyboardButton(text="Просмотр предыдущих")
-#         ],
-#     ]
-#     keyboard = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True,
-#     )
-#     await message.answer('Когда нужно будет завершить тренировку, нажмите на кнопку ниже или напишите "Закончить тренировку"', reply_markup=keyboard)
-
+    user_id = message.from_user.id
+    if check_user_exists(user_id):
+        return()
+    else:
+        print(f"Пользователь с ID {user_id} не найден в базе данных.")
+        create_user_table(user_id)
+     
 
 @dp.message(F.text.lower() == "начать новую тренировку" or "новая")
 async def new_training(message: types.Message):
@@ -89,9 +85,25 @@ async def new_training(message: types.Message):
 
 @dp.message(F.text.lower() == "закончить тренировку" or "стоп")
 async def finish_training(message: types.Message):
-    today = datetime.today().strftime('%d-%m-%Y')
-#----------------тут сделать кнопку под сообщением чтобы начать новую тренировку
+
+    kb = [
+        [
+            types.KeyboardButton(text="Начать новую тренировку"),
+            types.KeyboardButton(text="Просмотр предыдущих")
+        ],
+    ]
+    keyboard = types.ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
+    await message.reply(f"Тренировка {today} завершена. Буду ждать тебя снова :)", reply_markup=keyboard)
+
+@dp.message(F.text.lower() == "просмотр предыдущих")
+async def finish_training(message: types.Message):
+
     await message.reply(f"Тренировка {today} завершена. Буду ждать тебя снова :)")
+
 
 @dp.message()
 async def handle_message(message: types.Message):
