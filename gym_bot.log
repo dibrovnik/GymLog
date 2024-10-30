@@ -340,3 +340,5 @@ NameError: name 'logging' is not defined
 2024-10-30 12:51:00,210 - aiogram.event - INFO - Update id=503033867 is handled. Duration 280 ms by bot id=6778184881
 2024-10-30 12:51:04,543 - root - INFO - Retrieved and grouped training data by date for user 1615628366.
 2024-10-30 12:51:04,810 - aiogram.event - INFO - Update id=503033868 is handled. Duration 266 ms by bot id=6778184881
+2024-10-30 12:51:32,833 - aiogram.dispatcher - INFO - Polling stopped
+2024-10-30 12:51:33,041 - aiogram.dispatcher - INFO - Polling stopped for bot @my_gym_log_bot id=6778184881 - 'GymLog'
