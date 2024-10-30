@@ -1,4 +1,4 @@
 gym_bot.log
 .env
-data
+gym_log.db
 __pycache__
