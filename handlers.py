@@ -6,10 +6,14 @@ from utils import add_row
 import logging
 
 async def cmd_start(message: types.Message):
-    kb = [[types.KeyboardButton(text="Начать новую тренировку")]]
+    kb = [
+        [types.KeyboardButton(text="Начать новую тренировку")],
+        [types.KeyboardButton(text="Просмотр тренировок по датам")]
+    ]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
-    await message.answer("Привет, я бот для записи твоих тренировок. Начнем тренировку?", reply_markup=keyboard)
+    await message.answer("Привет, я бот для записи твоих тренировок. Выберите действие:", reply_markup=keyboard)
     logging.info(f"User {message.from_user.id} initiated the bot.")
+
 
 async def new_training(message: types.Message):
     await message.reply("Пришлите название упражнения, количество повторений и вес в формате: жим лежа, 8, 60", reply_markup=types.ReplyKeyboardRemove())
@@ -86,6 +90,6 @@ def register_handlers(dp: Dispatcher):
     dp.message.register(new_training, lambda message: "начать новую тренировку" in message.text.lower())
     dp.message.register(finish_training, lambda message: "закончить тренировку" in message.text.lower())
     dp.message.register(show_logs, Command("show_logs"))
-    dp.message.register(show_logs_by_date, Command("show_logs_by_date"))  # Регистрируем новую команду
+    dp.message.register(show_logs_by_date, lambda message: "просмотр тренировок по датам" in message.text.lower())
     dp.message.register(handle_message)
 

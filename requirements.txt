@@ -1,3 +1,4 @@
 loguru
 aiogram
 python-dotenv
+aiosqlite
