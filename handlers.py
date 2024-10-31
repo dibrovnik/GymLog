@@ -8,7 +8,7 @@ import logging
 async def cmd_start(message: types.Message):
     kb = [[types.KeyboardButton(text="Начать новую тренировку")]]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
-    await message.answer("Привет, я бот для записи твоих тренировок. Начнем тренировку?", reply_markup=keyboard)
+    await message.answer("Привет! Я бот для записи твоих тренировок. Начнем тренировку?", reply_markup=keyboard)
     logging.info(f"User {message.from_user.id} initiated the bot.")
 
 async def new_training(message: types.Message):
